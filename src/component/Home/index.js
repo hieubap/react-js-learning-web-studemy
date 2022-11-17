@@ -18,12 +18,9 @@ export default function Home() {
   }
   const previousOpenDetail = useRef(null);
   useEffect(() => {
-    // console.log(openDetail, "openDetail");
     if (typeof openDetail === "undefined") {
-      console.log("under");
       setOpenDetail(previousOpenDetail.current);
     }
-    console.log(openDetail, "openDetail");
     previousOpenDetail.current = openDetail;
   }, [openDetail]);
   const items = [
@@ -39,11 +36,9 @@ export default function Home() {
     getItem("Sub tab 4", "sub4", null),
   ];
   const onClick = (e) => {
-    console.log("click ", e);
     setOpenDetail(e.keyPath[e.keyPath.length - 1]);
   };
   const onOpenChange = (keys) => {
-    console.log(keys, "keys");
     setOpenDetail(keys[keys.length - 1]);
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
     if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {

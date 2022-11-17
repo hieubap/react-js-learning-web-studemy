@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const NewCoursesModalWrapper = styled.div`
+export const EditModalWrapper = styled.div`
   .input-container {
     margin-bottom: 10px;
     div:first-child {
@@ -10,7 +10,7 @@ export const NewCoursesModalWrapper = styled.div`
   }
 `;
 
-export const FooterCustomWrapper = styled.div`
+export const FooterCustomEditWrapper = styled.div`
   /* padding-right: 4%; */
   margin-bottom: 10px;
   .ant-btn[disabled],
@@ -24,10 +24,15 @@ export const FooterCustomWrapper = styled.div`
     box-shadow: none;
   }
   .button-footer {
-    width: calc(50% - 20px);
-    background: #40c7a7;
+    width: 100px;
     border-radius: 20px;
     color: white;
+  }
+  .cancel {
+    background: #40c7a7;
+  }
+  .edit {
+    background: blue;
   }
   .button-footer-disabled {
     border-radius: 20px;

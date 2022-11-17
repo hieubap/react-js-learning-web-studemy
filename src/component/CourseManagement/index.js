@@ -1,22 +1,40 @@
 import { WrapperStyled } from "./styled";
 import { Button, Space, Modal } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { CommonTable } from "../Common";
-import dataCourses from "../FakeData/dataCourse";
 import useCustomState from "../Common/useCustomState";
 import NewCourseModal from "../Modal/NewCourseModal";
 import SuccessModal from "../Modal/SuccessModal";
+import axios from "axios";
+import DeleteModal from "../Modal/DeleteModal";
+import EditModal from "../Modal/EditModal";
 
 export default function CourseManagement() {
   const [state, setState] = useCustomState({
+    record: {},
     openNewCourseModal: false,
     openSuccessModal: false,
+    openDeleteCourseModal: false,
+    openEditCourseModal: false,
+    page: 0,
+    size: 10,
   });
+  useEffect(() => {
+    axios
+      .get(`https://61fe8c59a58a4e00173c98cc.mockapi.io/courses-info`)
+      .then((res) => {
+        setState({ courses: res.data });
+      })
+      .catch((error) => console.log(error));
+  }, [
+    state.openSuccessModal,
+    state.openDeleteCourseModal,
+    state.openEditCourseModal,
+  ]);
   const handleOpenSuccessModal = () => {
     setState({ openSuccessModal: true });
     setState({ openNewCourseModal: false });
   };
-  console.log(state, "state");
   const columns = [
     {
       title: "#",
@@ -24,7 +42,7 @@ export default function CourseManagement() {
       key: "index",
       align: "center",
       render: (value, item, index) => {
-        return index;
+        return state.page * state.size + index + 1;
       },
     },
     {
@@ -56,10 +74,39 @@ export default function CourseManagement() {
       key: "action",
       align: "center",
       render: (_, record) => (
-        <Space size="middle">
-          <div>123</div>
-          <div>123</div>
-        </Space>
+        <div className="d-flex action-container">
+          <div className="action">
+            <img
+              alt=""
+              className="action-table"
+              src={require("../../assets/detail-icon.png")}
+            />
+          </div>
+          <div
+            className="action"
+            onClick={() => {
+              setState({ openEditCourseModal: true, record: record });
+            }}
+          >
+            <img
+              alt=""
+              className="action-table"
+              src={require("../../assets/edit-icon.png")}
+            />
+          </div>
+          <div
+            className="action"
+            onClick={() => {
+              setState({ openDeleteCourseModal: true, record: record });
+            }}
+          >
+            <img
+              alt=""
+              className="action-table"
+              src={require("../../assets/trash-icon.png")}
+            />
+          </div>
+        </div>
       ),
     },
   ];
@@ -77,13 +124,30 @@ export default function CourseManagement() {
           New course +
         </Button>
       </div>
-      <CommonTable columns={columns} dataSource={dataCourses} />
+      <CommonTable
+        pagination={{
+          current: state.page + 1,
+          defaultPageSize: 10,
+          onChange: (page, pageSize) => {
+            setState({
+              page: page - 1,
+              size: pageSize,
+            });
+          },
+          showSizeChanger: true,
+          pageSizeOptions: [3, 5, 10, 15, 20],
+        }}
+        columns={columns}
+        dataSource={state.courses}
+      />
       <NewCourseModal
         state={state}
         setState={setState}
         handleOpenSuccessModal={handleOpenSuccessModal}
       />
       <SuccessModal state={state} setState={setState} />
+      <DeleteModal state={state} setState={setState} />
+      <EditModal state={state} setState={setState} />
     </WrapperStyled>
   );
 }

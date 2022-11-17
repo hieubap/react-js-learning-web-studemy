@@ -4,13 +4,13 @@ import { BaseModalTitleWrapper, BaseModalFooterWrapper } from "./styled";
 
 export default function BaseModal({
   openModal,
-  // setOpenModal,
   state,
   setState,
   handleOpenModal,
   width,
   titleModal,
   buttonFooter,
+  footerCustom,
   arrowBack,
   content,
 }) {
@@ -19,6 +19,10 @@ export default function BaseModal({
       setState({ openNewCourseModal: false });
     } else if (titleModal === "Success") {
       setState({ openSuccessModal: false });
+    } else if (titleModal === "Delete course") {
+      setState({ openDeleteCourseModal: false });
+    } else if (titleModal === "Edit course") {
+      setState({ openEditCourseModal: false });
     }
   };
 
@@ -43,14 +47,20 @@ export default function BaseModal({
       onOk={handleClose}
       onCancel={handleClose}
       footer={
-        <BaseModalFooterWrapper>
-          <Button
-            onClick={handleOpenModal ? handleOpenModal : handleClose}
-            className={"button-footer"}
-          >
-            {buttonFooter}
-          </Button>
-        </BaseModalFooterWrapper>
+        <>
+          {footerCustom ? (
+            <>{footerCustom}</>
+          ) : (
+            <BaseModalFooterWrapper>
+              <Button
+                onClick={handleOpenModal ? handleOpenModal : handleClose}
+                className={"button-footer"}
+              >
+                {buttonFooter}
+              </Button>
+            </BaseModalFooterWrapper>
+          )}
+        </>
       }
     >
       {content}

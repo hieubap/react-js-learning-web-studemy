@@ -13,4 +13,16 @@ export const WrapperStyled = styled.div`
     display: flex;
     justify-content: end;
   }
+  .action-container {
+    width: 80px;
+    justify-content: space-between;
+    .action {
+      cursor: pointer;
+      width: 20px;
+      img.action-table {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
 `;

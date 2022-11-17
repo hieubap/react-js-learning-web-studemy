@@ -1,59 +1,60 @@
 import React from "react";
-import { FooterCustomWrapper, NewCoursesModalWrapper } from "./styled";
+import { EditModalWrapper, FooterCustomEditWrapper } from "./styled";
 import BaseModal from "../../Common/BaseModal";
 import { Button, Input } from "antd";
 import axios from "axios";
 
-export default function NewCourseModal({
-  state,
-  setState,
-  handleOpenSuccessModal,
-}) {
+export default function EditModal({ state, setState }) {
   return (
     <BaseModal
-      handleOpenModal={handleOpenSuccessModal}
       state={state}
       setState={setState}
       width={500}
-      openModal={state.openNewCourseModal}
-      titleModal={"New course"}
-      // buttonFooter={"Add new course"}
+      openModal={state.openEditCourseModal}
+      titleModal={"Edit course"}
+      arrowBack={false}
       footerCustom={
-        <FooterCustomWrapper>
+        <FooterCustomEditWrapper>
           <Button
-            onClick={async () => {
-              await axios
-                .post(
-                  `https://61fe8c59a58a4e00173c98cc.mockapi.io/courses-info`,
+            onClick={() => {
+              setState({ openEditCourseModal: false, record: {} });
+            }}
+            className={"button-footer cancel"}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              axios
+                .put(
+                  `https://61fe8c59a58a4e00173c98cc.mockapi.io/courses-info/${state?.record?.id}`,
                   {
                     name: state.newName,
                     duration: state.newDuration,
                     teacher: state.newTeacher,
                     price: state.newPrice,
-                    // id: parseInt(state.courses.length) + 1,
                   }
                 )
                 .then(function (response) {
+                  setState({ openEditCourseModal: false, record: {} });
                   console.log(response);
                 })
                 .catch(function (error) {
                   console.log(error);
                 });
-              handleOpenSuccessModal();
             }}
-            className={"button-footer"}
+            className={"button-footer edit"}
           >
-            Add new course
+            Update
           </Button>
-        </FooterCustomWrapper>
+        </FooterCustomEditWrapper>
       }
-      arrowBack={true}
       content={
-        <NewCoursesModalWrapper>
+        <EditModalWrapper>
           <div className="d-flex input-container">
             <div>Name :</div>
             <Input
-              placeholder="Enter name course ..."
+              placeholder={state?.record?.name}
               style={{ width: "300px" }}
               onChange={(e) => {
                 setState({ newName: e.target.value });
@@ -63,7 +64,7 @@ export default function NewCourseModal({
           <div className="d-flex input-container">
             <div>Duration :</div>
             <Input
-              placeholder="Enter duration course ..."
+              placeholder={state?.record?.duration}
               style={{ width: "300px" }}
               onChange={(e) => {
                 setState({ newDuration: e.target.value });
@@ -73,7 +74,7 @@ export default function NewCourseModal({
           <div className="d-flex input-container">
             <div>Teacher :</div>
             <Input
-              placeholder="Enter teacher's course name ..."
+              placeholder={state?.record?.teacher}
               style={{ width: "300px" }}
               onChange={(e) => {
                 setState({ newTeacher: e.target.value });
@@ -83,14 +84,14 @@ export default function NewCourseModal({
           <div className="d-flex input-container">
             <div>Price :</div>
             <Input
-              placeholder="Enter price course ..."
+              placeholder={state?.record?.price}
               style={{ width: "300px" }}
               onChange={(e) => {
                 setState({ newPrice: e.target.value });
               }}
             />
           </div>
-        </NewCoursesModalWrapper>
+        </EditModalWrapper>
       }
     />
   );
