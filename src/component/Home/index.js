@@ -1,9 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { WrapperStyled } from "./styled";
-import { Menu } from "antd";
+import { Button, Menu } from "antd";
 import CourseManagement from "../CourseManagement";
 import ClassManagement from "../ClassManagement";
+import { useHistory } from "react-router-dom";
+import useToken from "../Common/useToken";
 export default function Home() {
+  const history = useHistory();
+  const { token } = useToken();
+  console.log(token, "token123");
+  if (!token) {
+    history.push({ pathname: "/" });
+  }
   const rootSubmenuKeys = ["sub1", "sub2"];
   const [openKeys, setOpenKeys] = useState(["sub1"]);
   const [openDetail, setOpenDetail] = useState("sub1");
@@ -54,16 +62,11 @@ export default function Home() {
       </div>
       <div className="content">
         <div className="menu">
-          {/* <div className="cha">
-            <div className="con"></div>
-          </div> */}
-
           <Menu
             onClick={onClick}
             style={{
               width: "100%",
             }}
-            // defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
             onOpenChange={onOpenChange}
             openKeys={openKeys}

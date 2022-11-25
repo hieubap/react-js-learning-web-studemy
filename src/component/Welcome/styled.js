@@ -13,8 +13,8 @@ export const WrapperStyled = styled.div`
     position: absolute;
     top: 15vh;
     left: 15vh;
-    width: 600px;
-    height: 430px;
+    width: 350px;
+    height: 320px;
     background: white;
     border-radius: 2vw;
     .title {
@@ -67,12 +67,6 @@ export const WrapperStyled = styled.div`
     }
     .sign-in {
       text-align: center;
-    }
-    .warning {
-      color: red;
-      margin-left: 204px;
-      margin-top: 10px;
-      margin-bottom: -9px;
     }
   }
 `;

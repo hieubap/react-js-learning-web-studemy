@@ -8,6 +8,7 @@ import SuccessModal from "../Modal/SuccessModal";
 import axios from "axios";
 import DeleteModal from "../Modal/DeleteModal";
 import EditModal from "../Modal/EditModal";
+import { headers } from "../Common/CommonModal";
 
 export default function CourseManagement() {
   const [state, setState] = useCustomState({
@@ -21,9 +22,14 @@ export default function CourseManagement() {
   });
   useEffect(() => {
     axios
-      .get(`https://61fe8c59a58a4e00173c98cc.mockapi.io/courses-info`)
+      .get(`https://e069-113-190-20-79.ap.ngrok.io/course`, {
+        params: {page:0,
+        size:10},
+        headers: headers,
+      })
       .then((res) => {
-        setState({ courses: res.data });
+        console.log(res, "res.data");
+        // setState({ courses: res.data });
       })
       .catch((error) => console.log(error));
   }, [

@@ -20,3 +20,11 @@ span.ant-modal-close-x {
 .d-flex {
   display: flex;
 }
+
+.ant-modal-confirm-body .ant-modal-confirm-content {
+  font-weight: 400;
+}
+
+.ant-modal-content {
+  border-radius: 25px !important;
+}
