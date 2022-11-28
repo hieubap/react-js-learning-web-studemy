@@ -7,6 +7,7 @@ import axios from "axios";
 import { ModalError } from "../Common/CommonModal";
 import { Modal } from "antd";
 import { useHistory } from "react-router-dom";
+import { storeFirebase } from "../../firebase";
 
 export default function Register() {
   const history = useHistory();
@@ -22,7 +23,7 @@ export default function Register() {
     if (state.password === state.passwordConfirm) {
       setState({ error: false });
       await axios
-        .post(`https://e069-113-190-20-79.ap.ngrok.io/account/register`, {
+        .post(storeFirebase.api + `/account/register`, {
           username: state.username,
           password: state.password,
           phone: state.phone,

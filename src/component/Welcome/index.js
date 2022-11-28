@@ -8,6 +8,7 @@ import { ModalError } from "../Common/CommonModal";
 import { useHistory } from "react-router-dom";
 import useToken from "../Common/useToken";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { storeFirebase } from "../../firebase";
 
 export default function Welcome() {
   const [state, setState] = useCustomState({
@@ -18,7 +19,7 @@ export default function Welcome() {
   const { setToken } = useToken();
   const LogIn = async () => {
     await axios
-      .post(`https://e069-113-190-20-79.ap.ngrok.io/account/login`, {
+      .post(storeFirebase.api + `/account/login`, {
         username: state.username,
         password: state.password,
       })

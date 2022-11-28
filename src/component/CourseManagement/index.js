@@ -9,6 +9,7 @@ import axios from "axios";
 import DeleteModal from "../Modal/DeleteModal";
 import EditModal from "../Modal/EditModal";
 import { headers } from "../Common/CommonModal";
+import { storeFirebase } from "../../firebase";
 
 export default function CourseManagement() {
   const [state, setState] = useCustomState({
@@ -22,11 +23,14 @@ export default function CourseManagement() {
   });
   useEffect(() => {
     axios
-      .get(`https://e069-113-190-20-79.ap.ngrok.io/course`, {
-        params: {page:0,
-        size:10},
-        headers: headers,
-      })
+      .patch(
+        storeFirebase.api + "/course/search",
+        {},
+        {
+          params: { page: 0, size: 10 },
+          headers: headers,
+        }
+      )
       .then((res) => {
         console.log(res, "res.data");
         // setState({ courses: res.data });
