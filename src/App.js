@@ -7,9 +7,12 @@ import firebase from "./firebase";
 import VideoCall from "./component/VideoCall";
 import useToken from "./component/Common/useToken";
 import { headers } from "./component/Common/CommonModal";
+import {storeFirebase} from './firebase';
+
 function App() {
   const tokenString = localStorage.getItem("token");
   headers.Authorization = "Bearer " + tokenString;
+  storeFirebase.videoCallApi = localStorage.getItem("videoCallApi");
 
   useEffect(() => {
     console.log(headers, "headers");

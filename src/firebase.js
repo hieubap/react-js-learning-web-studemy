@@ -3,6 +3,7 @@ import { getDatabase, ref, child, onValue } from "@firebase/database";
 
 export const storeFirebase = {
   api: "",
+  videoCallApi: "",
   notice: "",
 };
 const firebaseConfig = {
@@ -31,6 +32,8 @@ export default function () {
       dataUpdate.notice = data.notice;
     }
     storeFirebase.api = data.api;
+    storeFirebase.videoCallApi = data.videoCallApi;
     storeFirebase.notice = data.notice;
+    localStorage.setItem("videoCallApi", data.videoCallApi);
   });
 }
