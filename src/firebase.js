@@ -2,7 +2,7 @@ import { initializeApp } from "@firebase/app";
 import { getDatabase, ref, child, onValue } from "@firebase/database";
 
 export const storeFirebase = {
-  api: "",
+  api: "https://40f8-14-177-40-231.ap.ngrok.io",
   videoCallApi: "",
   notice: "",
 };

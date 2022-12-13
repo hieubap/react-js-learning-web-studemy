@@ -56,7 +56,7 @@ export const CommonTableWrapper = styled.div`
     border-left: 1px dotted white;
   }  */
   .ant-table-cell {
-    padding: 16px 30px;
+    padding: 8px 4px;
   }
   .ant-table-tbody .ant-table-cell {
     border-right: 2px dashed #40c7a7;

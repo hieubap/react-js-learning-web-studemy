@@ -5,6 +5,7 @@ import CourseManagement from "../CourseManagement";
 import ClassManagement from "../ClassManagement";
 import { useHistory } from "react-router-dom";
 import useToken from "../Common/useToken";
+import CategoryManagement from "../CagetoryManagement";
 export default function Home() {
   const history = useHistory();
   const { token } = useToken();
@@ -32,16 +33,9 @@ export default function Home() {
     previousOpenDetail.current = openDetail;
   }, [openDetail]);
   const items = [
-    getItem(<>Course Management</>, "sub1", null, [
-      getItem(<p href="">Tab 1</p>, "1"),
-      getItem(<p href="">Tab 2</p>, "2"),
-    ]),
-    getItem(<>Class Management</>, "sub2", null, [
-      getItem(<p href="">Tab 3</p>, "3"),
-      getItem(<p href="">Tab 4</p>, "4"),
-    ]),
-    getItem("Sub tab 3", "sub3", null),
-    getItem("Sub tab 4", "sub4", null),
+    getItem("Course Management", "sub1", null),
+    getItem("Class Management", "sub2", null),
+    getItem("Category Management", "sub3", null),
   ];
   const onClick = (e) => {
     setOpenDetail(e.keyPath[e.keyPath.length - 1]);
@@ -80,9 +74,7 @@ export default function Home() {
           ) : openDetail === "sub2" ? (
             <ClassManagement />
           ) : openDetail === "sub3" ? (
-            <div>3</div>
-          ) : openDetail === "sub4" ? (
-            <div>4</div>
+            <CategoryManagement />
           ) : (
             <>fail</>
           )}

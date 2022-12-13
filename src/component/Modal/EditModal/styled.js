@@ -3,9 +3,9 @@ import styled from "styled-components";
 export const EditModalWrapper = styled.div`
   .input-container {
     margin-bottom: 10px;
-    div:first-child {
+    .custom-title {
       padding-top: 5px;
-      width: 100px;
+      width: 120px;
     }
   }
 `;

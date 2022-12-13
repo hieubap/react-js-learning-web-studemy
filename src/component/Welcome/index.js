@@ -4,7 +4,7 @@ import { Button, Input } from "antd";
 import { Link } from "react-router-dom";
 import useCustomState from "../Common/useCustomState";
 import axios from "axios";
-import { ModalError } from "../Common/CommonModal";
+import { headers, ModalError } from "../Common/CommonModal";
 import { useHistory } from "react-router-dom";
 import useToken from "../Common/useToken";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
@@ -19,10 +19,14 @@ export default function Welcome() {
   const { setToken } = useToken();
   const LogIn = async () => {
     await axios
-      .post(storeFirebase.api + `/account/login`, {
-        username: state.username,
-        password: state.password,
-      })
+      .post(
+        `https://40f8-14-177-40-231.ap.ngrok.io/account/login`,
+        {
+          username: state.username,
+          password: state.password,
+        }
+        // headers: headers,
+      )
       .then(function (res) {
         console.log(res, "res");
         if (res.data.code === 0) {
@@ -36,6 +40,7 @@ export default function Welcome() {
       })
       .catch(function (error) {
         console.log(error, "err");
+        ModalError("Đã xảy ra lỗi !!!");
       });
   };
 

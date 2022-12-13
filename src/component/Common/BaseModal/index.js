@@ -15,13 +15,25 @@ export default function BaseModal({
   content,
 }) {
   const handleClose = () => {
-    if (titleModal === "New course") {
+    if (
+      titleModal === "New course" ||
+      titleModal === "New chapter" ||
+      titleModal === "New category"
+    ) {
       setState({ openNewCourseModal: false });
     } else if (titleModal === "Success") {
       setState({ openSuccessModal: false });
-    } else if (titleModal === "Delete course") {
+    } else if (
+      titleModal === "Delete course" ||
+      titleModal === "Delete chapter" ||
+      titleModal === "Delete category"
+    ) {
       setState({ openDeleteCourseModal: false });
-    } else if (titleModal === "Edit course") {
+    } else if (
+      titleModal === "Edit course" ||
+      titleModal === "Edit chapter" ||
+      titleModal === "Edit category"
+    ) {
       setState({ openEditCourseModal: false });
     }
   };

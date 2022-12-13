@@ -15,6 +15,7 @@ export const WrapperStyled = styled.div`
   }
   .action-container {
     width: 80px;
+    margin: auto;
     justify-content: space-between;
     .action {
       cursor: pointer;

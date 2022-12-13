@@ -11,7 +11,7 @@ import EditModal from "../Modal/EditModal";
 import { headers } from "../Common/CommonModal";
 import { storeFirebase } from "../../firebase";
 
-export default function ClassManagement() {
+export default function CategoryManagement() {
   const [state, setState] = useCustomState({
     record: {},
     openNewCourseModal: false,
@@ -24,7 +24,7 @@ export default function ClassManagement() {
   useEffect(() => {
     axios
       .patch(
-        storeFirebase.api + "/chapter/search",
+        storeFirebase.api + "/category/search",
         {},
         {
           params: { page: 0, size: 10 },
@@ -64,7 +64,7 @@ export default function ClassManagement() {
       width: "5%",
     },
     {
-      title: "Name Chapter",
+      title: "Name Category",
       dataIndex: "name",
       key: "name",
       align: "center",
@@ -74,13 +74,6 @@ export default function ClassManagement() {
       title: "Create time",
       dataIndex: "createdAt",
       key: "createdAt",
-      align: "center",
-      width: "10%",
-    },
-    {
-      title: "Duration",
-      dataIndex: "duration",
-      key: "duration",
       align: "center",
       width: "10%",
     },
@@ -136,7 +129,7 @@ export default function ClassManagement() {
 
   return (
     <WrapperStyled>
-      <div className="title-courses">Chapter List</div>
+      <div className="title-courses">Category List</div>
       <div className="add-new-button">
         <Button
           onClick={() => {
@@ -144,7 +137,7 @@ export default function ClassManagement() {
           }}
           type="primary"
         >
-          New Chapter +
+          New Category +
         </Button>
       </div>
       <CommonTable
@@ -167,11 +160,11 @@ export default function ClassManagement() {
         state={state}
         setState={setState}
         handleOpenSuccessModal={handleOpenSuccessModal}
-        tab="chapter"
+        tab="category"
       />
-      <SuccessModal state={state} setState={setState} tab="chapter" />
-      <DeleteModal state={state} setState={setState} tab="chapter" />
-      <EditModal state={state} setState={setState} tab="chapter" />
+      <SuccessModal state={state} setState={setState} tab="category" />
+      <DeleteModal state={state} setState={setState} tab="category" />
+      <EditModal state={state} setState={setState} tab="category" />
     </WrapperStyled>
   );
 }

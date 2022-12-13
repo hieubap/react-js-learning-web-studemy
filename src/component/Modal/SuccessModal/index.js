@@ -12,9 +12,7 @@ export default function SuccessModal({ state, setState }) {
       buttonFooter={"OK"}
       arrowBack={false}
       content={
-        <SuccessModalWrapper>
-          Add new course successfully !!!
-        </SuccessModalWrapper>
+        <SuccessModalWrapper>Action successfully !!!</SuccessModalWrapper>
       }
     />
   );

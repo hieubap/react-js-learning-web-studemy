@@ -32,8 +32,15 @@ export default function CourseManagement() {
         }
       )
       .then((res) => {
-        console.log(res, "res.data");
-        // setState({ courses: res.data });
+        console.log(res.data.data, "res.data");
+        let dataCourse = [];
+        res.data?.data?.map((item, index) => {
+          let newData = {
+            ...item,
+          };
+          dataCourse.push(newData);
+        });
+        setState({ dataCourse: dataCourse });
       })
       .catch((error) => console.log(error));
   }, [
@@ -54,30 +61,64 @@ export default function CourseManagement() {
       render: (value, item, index) => {
         return state.page * state.size + index + 1;
       },
+      width: "5%",
     },
     {
-      title: "Name",
+      title: "Name Course",
       dataIndex: "name",
       key: "name",
       align: "center",
+      width: "25%",
     },
+    {
+      title: "Category",
+      dataIndex: "categoryName",
+      key: "categoryName",
+      align: "center",
+      width: "10%",
+    },
+    {
+      title: "Level",
+      dataIndex: "levelName",
+      key: "categoryName",
+      align: "center",
+      width: "10%",
+    },
+    {
+      title: "Create time",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      align: "center",
+      width: "10%",
+    },
+
     {
       title: "Duration",
       dataIndex: "duration",
       key: "duration",
       align: "center",
+      width: "5%",
     },
     {
-      title: "Teacher",
-      dataIndex: "teacher",
-      key: "teacher",
+      title: "Author",
+      dataIndex: "author",
+      key: "author",
       align: "center",
+      width: "10%",
+    },
+    {
+      title: "Member",
+      dataIndex: "numberStudent",
+      key: "numberStudent",
+      align: "center",
+      width: "5%",
     },
     {
       title: "Price",
       dataIndex: "price",
       key: "price",
       align: "center",
+      width: "5%",
     },
     {
       title: "Action",
@@ -118,6 +159,7 @@ export default function CourseManagement() {
           </div>
         </div>
       ),
+      width: "15%",
     },
   ];
 
@@ -148,16 +190,17 @@ export default function CourseManagement() {
           pageSizeOptions: [3, 5, 10, 15, 20],
         }}
         columns={columns}
-        dataSource={state.courses}
+        dataSource={state.dataCourse}
       />
       <NewCourseModal
         state={state}
         setState={setState}
         handleOpenSuccessModal={handleOpenSuccessModal}
+        tab="course"
       />
-      <SuccessModal state={state} setState={setState} />
-      <DeleteModal state={state} setState={setState} />
-      <EditModal state={state} setState={setState} />
+      <SuccessModal state={state} setState={setState} tab="course" />
+      <DeleteModal state={state} setState={setState} tab="course" />
+      <EditModal state={state} setState={setState} tab="course" />
     </WrapperStyled>
   );
 }

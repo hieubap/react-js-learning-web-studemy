@@ -36,7 +36,7 @@ export const WrapperStyled = styled.div`
     .menu {
       border-radius: 20px;
       background-color: #40c7a7;
-      width: 25%;
+      width: 20%;
       height: 100%;
       p {
         padding-top: 12px;
@@ -169,7 +169,7 @@ export const WrapperStyled = styled.div`
       } */
     }
     .detail {
-      width: 75%;
+      width: 80%;
       /* width: 900px; */
       padding: 0px 0px 0px 20px;
     }
