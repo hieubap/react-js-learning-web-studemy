@@ -15,7 +15,7 @@ const VideoCall = (props) => {
     //our username
 
     //connecting to our signaling server
-    conn = new WebSocket("wss://" + storeFirebase.videoCallApi);
+    conn = new WebSocket("ws://" + storeFirebase.videoCallApi);
 
     conn.onopen = function () {
       console.log("Connected to the signaling server");
@@ -110,7 +110,7 @@ const VideoCall = (props) => {
 
             //using Google public stun server
             var configuration = {
-              iceServers: [{ url: "stun:stun2.1.google.com:19302" }],
+              iceServers: [{ url: "stun:stunserver.org" }],
             };
 
             yourConn = new RTCPeerConnection(configuration);

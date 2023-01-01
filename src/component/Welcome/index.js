@@ -20,7 +20,7 @@ export default function Welcome() {
   const LogIn = async () => {
     await axios
       .post(
-        `https://40f8-14-177-40-231.ap.ngrok.io/account/login`,
+        storeFirebase.api + "/account/login",
         {
           username: state.username,
           password: state.password,
@@ -33,6 +33,7 @@ export default function Welcome() {
           console.log(res.data.data.token, "helo");
 
           setToken(res.data.data.token);
+          localStorage.setItem("userId", res.data.data.userId);
           history.push({ pathname: "/home" });
         } else {
           ModalError(res.data.message);

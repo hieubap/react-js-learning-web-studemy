@@ -35,5 +35,6 @@ export default function () {
     storeFirebase.videoCallApi = data.videoCallApi;
     storeFirebase.notice = data.notice;
     localStorage.setItem("videoCallApi", data.videoCallApi);
+    localStorage.setItem("api", data.api);
   });
 }

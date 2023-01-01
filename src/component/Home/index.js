@@ -6,6 +6,8 @@ import ClassManagement from "../ClassManagement";
 import { useHistory } from "react-router-dom";
 import useToken from "../Common/useToken";
 import CategoryManagement from "../CagetoryManagement";
+import RegisterManagement from "../RegisterManagement";
+import ProfileManagement from "../ProfileManagement";
 export default function Home() {
   const history = useHistory();
   const { token } = useToken();
@@ -36,6 +38,8 @@ export default function Home() {
     getItem("Course Management", "sub1", null),
     getItem("Class Management", "sub2", null),
     getItem("Category Management", "sub3", null),
+    getItem("Register Management", "sub4", null),
+    getItem("Profile Management", "sub5", null),
   ];
   const onClick = (e) => {
     setOpenDetail(e.keyPath[e.keyPath.length - 1]);
@@ -75,6 +79,10 @@ export default function Home() {
             <ClassManagement />
           ) : openDetail === "sub3" ? (
             <CategoryManagement />
+          ) : openDetail === "sub4" ? (
+            <RegisterManagement />
+          ) : openDetail === "sub5" ? (
+            <ProfileManagement />
           ) : (
             <>fail</>
           )}
