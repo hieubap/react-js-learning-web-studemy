@@ -10,6 +10,7 @@ import DeleteModal from "../Modal/DeleteModal";
 import EditModal from "../Modal/EditModal";
 import { headers } from "../Common/CommonModal";
 import { storeFirebase } from "../../firebase";
+import { base64 } from "@firebase/util";
 
 export default function RegisterManagement() {
   const [state, setState] = useCustomState({
@@ -37,14 +38,23 @@ export default function RegisterManagement() {
       )
       .then((res) => {
         console.log(res.data.data, "res.data");
-        let dataCourse = [];
-        res.data?.data?.map((item, index) => {
-          let newData = {
-            ...item,
-          };
-          dataCourse.push(newData);
+
+        res.data?.data.forEach((i) => {
+          if (i.imgUrl) {
+            fetch(
+              storeFirebase.api + "/file/load/" + base64.encodeString(i.imgUrl),
+              {
+                method: "PATCH",
+              }
+            )
+              .then((res) => res.blob())
+              .then((res) => {
+                document.getElementById("image-transaction-" + i.id).src =
+                  URL.createObjectURL(res);
+              });
+          }
         });
-        setState({ dataCourse: dataCourse });
+        setState({ dataCourse: res.data.data });
       })
       .catch((error) => console.log(error));
   };
@@ -105,13 +115,16 @@ export default function RegisterManagement() {
       key: "imgUrl",
       align: "center",
       width: "20%",
-      render: (item) =>
-        item ? (
+      render: (_, item) =>
+        _ ? (
           <img
-            src={storeFirebase.api + "/files/" + item}
+            id={"image-transaction-" + item.id}
+            src={storeFirebase.api + "/files/" + _}
             style={{ height: 200, cursor: "pointer" }}
             onClick={() => {
-              window.open(storeFirebase.api + "/files/" + item);
+              window.open(
+                document.getElementById("image-transaction-" + item.id).src
+              );
             }}
           />
         ) : (
@@ -161,7 +174,7 @@ export default function RegisterManagement() {
   return (
     <WrapperStyled>
       <div className="title-courses">Register List</div>
-      
+
       <CommonTable
         pagination={{
           current: state.page + 1,
