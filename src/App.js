@@ -12,8 +12,8 @@ import {storeFirebase} from './firebase';
 function App() {
   const tokenString = localStorage.getItem("token");
   headers.Authorization = "Bearer " + tokenString;
-  storeFirebase.videoCallApi = localStorage.getItem("videoCallApi");
-  storeFirebase.api = localStorage.getItem("api");
+  // storeFirebase.videoCallApi = localStorage.getItem("videoCallApi");
+  // storeFirebase.api = localStorage.getItem("api");
 
   useEffect(() => {
     console.log(headers, "headers");

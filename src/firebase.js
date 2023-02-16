@@ -2,7 +2,7 @@ import { initializeApp } from "@firebase/app";
 import { getDatabase, ref, child, onValue } from "@firebase/database";
 
 export const storeFirebase = {
-  api: "https://40f8-14-177-40-231.ap.ngrok.io",
+  api: "http://14.225.205.222:8800",
   videoCallApi: "",
   notice: "",
 };
@@ -22,19 +22,19 @@ initializeApp(firebaseConfig);
 // const db = database.getDatabase();
 
 export default function () {
-  const refApp = ref(getDatabase(), "learning_app");
+  // const refApp = ref(getDatabase(), "learning_app");
 
-  onValue(child(refApp, "config"), (snapshot) => {
-    const data = snapshot.val();
-    console.log(data, "api");
-    const dataUpdate = { init: true };
-    if (data.notice) {
-      dataUpdate.notice = data.notice;
-    }
-    storeFirebase.api = data.api;
-    storeFirebase.videoCallApi = data.videoCallApi;
-    storeFirebase.notice = data.notice;
-    localStorage.setItem("videoCallApi", data.videoCallApi);
-    localStorage.setItem("api", data.api);
-  });
+  // onValue(child(refApp, "config"), (snapshot) => {
+  //   const data = snapshot.val();
+  //   console.log(data, "api");
+  //   const dataUpdate = { init: true };
+  //   if (data.notice) {
+  //     dataUpdate.notice = data.notice;
+  //   }
+  //   storeFirebase.api = data.api;
+  //   storeFirebase.videoCallApi = data.videoCallApi;
+  //   storeFirebase.notice = data.notice;
+  //   localStorage.setItem("videoCallApi", data.videoCallApi);
+  //   localStorage.setItem("api", data.api);
+  // });
 }

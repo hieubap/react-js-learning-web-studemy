@@ -60,7 +60,7 @@ export default function NewCourseModal({
               tab === "course"
                 ? await axios
                     .post(
-                      `https://40f8-14-177-40-231.ap.ngrok.io/course`,
+                      `http://14.225.205.222:8800/course`,
                       {
                         name: state?.newName,
                         duration: state?.newDuration,
@@ -80,7 +80,7 @@ export default function NewCourseModal({
                 : tab === "chapter"
                 ? await axios
                     .post(
-                      `https://40f8-14-177-40-231.ap.ngrok.io/chapter`,
+                      `http://14.225.205.222:8800/chapter`,
                       {
                         name: state?.newName,
                         duration: state?.newDuration,
@@ -95,7 +95,7 @@ export default function NewCourseModal({
                     })
                 : await axios
                     .post(
-                      `https://40f8-14-177-40-231.ap.ngrok.io/category`,
+                      `http://14.225.205.222:8800/category`,
                       {
                         name: state?.newName,
                       },

@@ -35,7 +35,7 @@ export default function DeleteModal({ state, setState, tab }) {
               tab === "course"
                 ? axios
                     .delete(
-                      `https://40f8-14-177-40-231.ap.ngrok.io/course/${state?.record?.id}`,
+                      `http://14.225.205.222:8800/course/${state?.record?.id}`,
                       {
                         headers: headers,
                       }
@@ -50,7 +50,7 @@ export default function DeleteModal({ state, setState, tab }) {
                 : tab === "chapter"
                 ? axios
                     .delete(
-                      `https://40f8-14-177-40-231.ap.ngrok.io/chapter/${state?.record?.id}`,
+                      `http://14.225.205.222:8800/chapter/${state?.record?.id}`,
                       {
                         headers: headers,
                       }
@@ -64,7 +64,7 @@ export default function DeleteModal({ state, setState, tab }) {
                     })
                 : axios
                     .delete(
-                      `https://40f8-14-177-40-231.ap.ngrok.io/category/${state?.record?.id}`,
+                      `http://14.225.205.222:8800/category/${state?.record?.id}`,
                       {
                         headers: headers,
                       }

@@ -66,8 +66,8 @@ export default function EditModal({ state, setState, tab }) {
             onClick={() => {
               tab === "course"
                 ? axios
-                    .put(
-                      `https://40f8-14-177-40-231.ap.ngrok.io/course/${state?.record?.id}`,
+                    .patch(
+                      `http://14.225.205.222:8800/course/${state?.record?.id}`,
                       {
                         name: state?.newName,
                         duration: state?.newDuration,
@@ -90,7 +90,7 @@ export default function EditModal({ state, setState, tab }) {
                 : tab === "chapter"
                 ? axios
                     .put(
-                      `https://40f8-14-177-40-231.ap.ngrok.io/chapter/${state?.record?.id}`,
+                      `http://14.225.205.222:8800/chapter/${state?.record?.id}`,
                       {
                         name: state?.newName,
                         duration: state?.newDuration,
@@ -108,7 +108,7 @@ export default function EditModal({ state, setState, tab }) {
                     })
                 : axios
                     .put(
-                      `https://40f8-14-177-40-231.ap.ngrok.io/category/${state?.record?.id}`,
+                      `http://14.225.205.222:8800/category/${state?.record?.id}`,
                       {
                         name: state?.newName,
                       },

@@ -39,21 +39,21 @@ export default function RegisterManagement() {
       .then((res) => {
         console.log(res.data.data, "res.data");
 
-        res.data?.data.forEach((i) => {
-          if (i.imgUrl) {
-            fetch(
-              storeFirebase.api + "/file/load/" + base64.encodeString(i.imgUrl),
-              {
-                method: "PATCH",
-              }
-            )
-              .then((res) => res.blob())
-              .then((res) => {
-                document.getElementById("image-transaction-" + i.id).src =
-                  URL.createObjectURL(res);
-              });
-          }
-        });
+        // res.data?.data.forEach((i) => {
+        //   if (i.imgUrl) {
+        //     fetch(
+        //       storeFirebase.api + "/file/load/" + base64.encodeString(i.imgUrl),
+        //       {
+        //         method: "PATCH",
+        //       }
+        //     )
+        //       .then((res) => res.blob())
+        //       .then((res) => {
+        //         document.getElementById("image-transaction-" + i.id).src =
+        //           URL.createObjectURL(res);
+        //       });
+        //   }
+        // });
         setState({ dataCourse: res.data.data });
       })
       .catch((error) => console.log(error));
