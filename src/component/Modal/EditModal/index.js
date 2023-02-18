@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { EditModalWrapper, FooterCustomEditWrapper } from "./styled";
 import BaseModal from "../../Common/BaseModal";
 import { Button, Input, Select } from "antd";
@@ -10,17 +10,14 @@ import level from "../../FakeData/level";
 import { storeFirebase } from "../../../firebase";
 
 export default function EditModal({ state, setState, tab }) {
+  const filePath = useRef();
   useEffect(() => {
     console.log(state?.record, "record");
     axios
-      .patch(
-        storeFirebase.api + "/category/search",
-        {},
-        {
-          params: { page: 0, size: 10 },
-          headers: headers,
-        }
-      )
+      .get(storeFirebase.api + "/category", {
+        params: { page: 0, size: 100 },
+        headers: headers,
+      })
       .then((res) => {
         console.log(res.data.data, "res.data");
         let category = [];
@@ -35,6 +32,24 @@ export default function EditModal({ state, setState, tab }) {
           newCategory: state?.record?.categoryId,
           newLevel: state?.record?.level,
         });
+      })
+      .catch((error) => console.log(error));
+
+    axios
+      .get(storeFirebase.api + "/course", {
+        params: { page: 0, size: 500 },
+        headers: headers,
+      })
+      .then((res) => {
+        console.log(res.data.data, "res.data");
+        let courses = [];
+        res.data?.data?.map((item, index) => {
+          let newData = {
+            ...item,
+          };
+          courses.push(newData);
+        });
+        setState({ courses, courseId: 1 });
       })
       .catch((error) => console.log(error));
   }, [state.openEditCourseModal]);
@@ -94,6 +109,8 @@ export default function EditModal({ state, setState, tab }) {
                       {
                         name: state?.newName,
                         duration: state?.newDuration,
+                        fileUrl: filePath.current,
+                        courseId: state.courseId,
                       },
                       {
                         headers: headers,
@@ -203,6 +220,42 @@ export default function EditModal({ state, setState, tab }) {
             </>
           ) : tab === "chapter" ? (
             <>
+              <div className="d-flex input-container">
+                <div className="custom-title">File :</div>
+                <Input
+                  type="file"
+                  placeholder="choose file"
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    var d = new FormData();
+                    d.append("fileName", e.target.files[0].name);
+                    d.append("file", e.target.files[0]);
+
+                    axios
+                      .post(storeFirebase.api + "/file/upload", d)
+                      .then((res) => {
+                        filePath.current = res.data.data.filePath;
+                      })
+                      .catch((error) => console.log(error));
+                    console.log(e);
+                    // setState({ newName: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="d-flex input-container">
+                <div className="custom-title">Course :</div>
+                <Select
+                  defaultValue={state.courseId}
+                  style={{ width: 300 }}
+                  onChange={(e) => {
+                    console.log(e, "e.target.value");
+                    setState({ courseId: e });
+                  }}
+                  options={state.courses?.map((item, index) => {
+                    return { value: item.id, label: item.name };
+                  })}
+                />
+              </div>
               <div className="d-flex input-container">
                 <div className="custom-title">Name chapter :</div>
                 <Input

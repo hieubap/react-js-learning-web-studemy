@@ -11,7 +11,7 @@ export const WrapperStyled = styled.div`
   .add-new-button {
     width: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
   }
   .action-container {
     width: 80px;

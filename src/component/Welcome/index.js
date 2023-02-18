@@ -30,6 +30,10 @@ export default function Welcome() {
       .then(function (res) {
         console.log(res, "res");
         if (res.data.code === 0) {
+          if (res.data.data.role === "ROLE_1") {
+            ModalError("Tài khoản không phải admin !!!");
+            return;
+          }
           console.log(res.data.data.token, "helo");
 
           setToken(res.data.data.token);

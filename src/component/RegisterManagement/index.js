@@ -11,6 +11,7 @@ import EditModal from "../Modal/EditModal";
 import { headers } from "../Common/CommonModal";
 import { storeFirebase } from "../../firebase";
 import { base64 } from "@firebase/util";
+import InputSearch from "../InputSearch";
 
 export default function RegisterManagement() {
   const [state, setState] = useCustomState({
@@ -22,7 +23,7 @@ export default function RegisterManagement() {
     page: 0,
     size: 10,
   });
-  const getData = () => {
+  const getData = (name) => {
     axios
       .patch(
         storeFirebase.api + "/register/search",
@@ -32,6 +33,7 @@ export default function RegisterManagement() {
             authorId: localStorage.getItem("userId"),
             page: 0,
             size: 500,
+            studentName: name?.toLowerCase()
           },
           headers: headers,
         }
@@ -174,7 +176,7 @@ export default function RegisterManagement() {
   return (
     <WrapperStyled>
       <div className="title-courses">Register List</div>
-
+      <InputSearch onChange={getData}></InputSearch>
       <CommonTable
         pagination={{
           current: state.page + 1,

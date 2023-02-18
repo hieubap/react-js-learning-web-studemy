@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import { FooterCustomWrapper, NewCoursesModalWrapper } from "./styled";
 import BaseModal from "../../Common/BaseModal";
 import { Button, Input, Select } from "antd";
 import axios from "axios";
-import { headers } from "../../Common/CommonModal";
+import { ModalError, headers } from "../../Common/CommonModal";
 import level from "../../FakeData/level";
 // import category from "../../FakeData/category";
 import { useEffect } from "react";
@@ -14,16 +14,13 @@ export default function NewCourseModal({
   handleOpenSuccessModal,
   tab,
 }) {
+  const filePath = useRef();
   useEffect(() => {
     axios
-      .patch(
-        storeFirebase.api + "/category/search",
-        {},
-        {
-          params: { page: 0, size: 10 },
-          headers: headers,
-        }
-      )
+      .get(storeFirebase.api + "/category", {
+        params: { page: 0, size: 100 },
+        headers: headers,
+      })
       .then((res) => {
         console.log(res.data.data, "res.data");
         let category = [];
@@ -34,6 +31,23 @@ export default function NewCourseModal({
           category.push(newData);
         });
         setState({ category: category, newCategory: 1, newLevel: 1 });
+      })
+      .catch((error) => console.log(error));
+    axios
+      .get(storeFirebase.api + "/course", {
+        params: { page: 0, size: 500 },
+        headers: headers,
+      })
+      .then((res) => {
+        console.log(res.data.data, "res.data");
+        let courses = [];
+        res.data?.data?.map((item, index) => {
+          let newData = {
+            ...item,
+          };
+          courses.push(newData);
+        });
+        setState({ courses, courseId: 1 });
       })
       .catch((error) => console.log(error));
   }, [state.openNewCourseModal]);
@@ -78,21 +92,27 @@ export default function NewCourseModal({
                       console.log(error);
                     })
                 : tab === "chapter"
-                ? await axios
-                    .post(
-                      `http://14.225.205.222:8800/chapter`,
-                      {
-                        name: state?.newName,
-                        duration: state?.newDuration,
-                      },
-                      { headers: headers }
-                    )
-                    .then(function (response) {
-                      console.log(response);
-                    })
-                    .catch(function (error) {
-                      console.log(error);
-                    })
+                ? filePath.current
+                  ? await axios
+                      .post(
+                        `http://14.225.205.222:8800/chapter`,
+                        {
+                          name: state?.newName,
+                          duration: state?.newDuration,
+                          fileUrl: filePath.current,
+                          courseId: state.courseId,
+                        },
+                        { headers: headers }
+                      )
+                      .then(function (response) {
+                        console.log(response);
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                      })
+                  : (() => {
+                      ModalError("Vui lòng upload file");
+                    })()
                 : await axios
                     .post(
                       `http://14.225.205.222:8800/category`,
@@ -107,7 +127,8 @@ export default function NewCourseModal({
                     .catch(function (error) {
                       console.log(error);
                     });
-              handleOpenSuccessModal();
+              if (!(tab === "chapter" && !filePath.current))
+                handleOpenSuccessModal();
             }}
             className={"button-footer"}
           >
@@ -195,6 +216,42 @@ export default function NewCourseModal({
             </>
           ) : tab === "chapter" ? (
             <>
+              <div className="d-flex input-container">
+                <div className="custom-title">File :</div>
+                <Input
+                  type="file"
+                  placeholder="choose file"
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    var d = new FormData();
+                    d.append("fileName", e.target.files[0].name);
+                    d.append("file", e.target.files[0]);
+
+                    axios
+                      .post(storeFirebase.api + "/file/upload", d)
+                      .then((res) => {
+                        filePath.current = res.data.data.filePath;
+                      })
+                      .catch((error) => console.log(error));
+                    console.log(e);
+                    // setState({ newName: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="d-flex input-container">
+                <div className="custom-title">Course :</div>
+                <Select
+                  defaultValue={state.courseId}
+                  style={{ width: 300 }}
+                  onChange={(e) => {
+                    console.log(e, "e.target.value");
+                    setState({ courseId: e });
+                  }}
+                  options={state.courses?.map((item, index) => {
+                    return { value: item.id, label: item.name };
+                  })}
+                />
+              </div>
               <div className="d-flex input-container">
                 <div className="custom-title">Name chapter :</div>
                 <Input

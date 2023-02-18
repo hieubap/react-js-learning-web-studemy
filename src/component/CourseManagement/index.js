@@ -1,5 +1,5 @@
 import { WrapperStyled } from "./styled";
-import { Button, Space, Modal } from "antd";
+import { Button, Space, Modal, Input } from "antd";
 import React, { useEffect } from "react";
 import { CommonTable } from "../Common";
 import useCustomState from "../Common/useCustomState";
@@ -10,6 +10,7 @@ import DeleteModal from "../Modal/DeleteModal";
 import EditModal from "../Modal/EditModal";
 import { headers } from "../Common/CommonModal";
 import { storeFirebase } from "../../firebase";
+import InputSearch from "../InputSearch";
 
 export default function CourseManagement() {
   const [state, setState] = useCustomState({
@@ -21,16 +22,17 @@ export default function CourseManagement() {
     page: 0,
     size: 10,
   });
-  useEffect(() => {
+  const onSearch = (name) => {
     axios
-      .patch(
-        storeFirebase.api + "/course/search",
-        {},
-        {
-          params: { page: 0, size: 10 },
-          headers: headers,
-        }
-      )
+      .get(storeFirebase.api + "/course", {
+        params: {
+          page: 0,
+          size: 500,
+          createdBy: localStorage.getItem("userId"),
+          name: name?.toLowerCase(),
+        },
+        headers: headers,
+      })
       .then((res) => {
         console.log(res.data.data, "res.data");
         let dataCourse = [];
@@ -43,6 +45,9 @@ export default function CourseManagement() {
         setState({ dataCourse: dataCourse });
       })
       .catch((error) => console.log(error));
+  };
+  useEffect(() => {
+    onSearch();
   }, [
     state.openSuccessModal,
     state.openDeleteCourseModal,
@@ -126,13 +131,13 @@ export default function CourseManagement() {
       align: "center",
       render: (_, record) => (
         <div className="d-flex action-container">
-          <div className="action">
+          {/* <div className="action">
             <img
               alt=""
               className="action-table"
               src={require("../../assets/detail-icon.png")}
             />
-          </div>
+          </div> */}
           <div
             className="action"
             onClick={() => {
@@ -167,6 +172,7 @@ export default function CourseManagement() {
     <WrapperStyled>
       <div className="title-courses">Course List</div>
       <div className="add-new-button">
+        <InputSearch onChange={onSearch}></InputSearch>
         <Button
           onClick={() => {
             setState({ openNewCourseModal: true });
