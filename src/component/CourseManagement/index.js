@@ -126,11 +126,33 @@ export default function CourseManagement() {
       width: "5%",
     },
     {
+      title: "Picture",
+      dataIndex: "imageUrl",
+      key: "imageUrl",
+      align: "center",
+      width: "10%",
+      render: (item, record) => (
+        <>
+          {item == null ? (
+            <div>Chưa upload ảnh</div>
+          ) : item.slice(0, 5) == "https" ? (
+            <img alt="" src={item} style={{ height: "auto", width: 100 }} />
+          ) : (
+            <img
+              alt=""
+              src={storeFirebase.api + "/files/" + item}
+              style={{ height: "auto", width: 100 }}
+            />
+          )}
+        </>
+      ),
+    },
+    {
       title: "Action",
       key: "action",
       align: "center",
       render: (_, record) => (
-        <div className="d-flex action-container">
+        <div className="d-flex action-container justify-content-space-around">
           {/* <div className="action">
             <img
               alt=""

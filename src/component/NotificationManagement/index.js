@@ -12,7 +12,7 @@ import { headers } from "../Common/CommonModal";
 import { storeFirebase } from "../../firebase";
 import InputSearch from "../InputSearch";
 
-export default function CategoryManagement() {
+export default function NotificationManagement() {
   const [state, setState] = useCustomState({
     record: {},
     openNewCourseModal: false,
@@ -24,20 +24,25 @@ export default function CategoryManagement() {
   });
   const onSearch = (name) => {
     axios
-      .get(storeFirebase.api + "/category", {
-        params: { page: 0, size: 10, name: name?.toLowerCase() },
+      .get(storeFirebase.api + "/notification", {
+        params: {
+          page: 0,
+          size: 10,
+          title: name?.toLowerCase(),
+          // body: name?.toLowerCase(),
+        },
         headers: headers,
       })
       .then((res) => {
         console.log(res.data.data, "res.data");
-        let dataCategory = [];
+        let dataNotification = [];
         res.data?.data?.map((item, index) => {
           let newData = {
             ...item,
           };
-          dataCategory.push(newData);
+          dataNotification.push(newData);
         });
-        setState({ dataCategory: dataCategory });
+        setState({ dataNotification: dataNotification });
       })
       .catch((error) => console.log(error));
   };
@@ -64,47 +69,18 @@ export default function CategoryManagement() {
       width: "5%",
     },
     {
-      title: "Name Category",
-      dataIndex: "name",
-      key: "name",
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
       align: "center",
-      width: "25%",
+      width: "20%",
     },
     {
-      title: "Create time",
-      dataIndex: "createdAt",
-      key: "createdAt",
+      title: "Body",
+      dataIndex: "body",
+      key: "body",
       align: "center",
-      width: "10%",
-    },
-    {
-      title: "Update time",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
-      align: "center",
-      width: "10%",
-    },
-    {
-      title: "Picture",
-      dataIndex: "imageUrl",
-      key: "imageUrl",
-      align: "center",
-      width: "10%",
-      render: (item, record) => (
-        <>
-          {item == null ? (
-            <div>Chưa upload ảnh</div>
-          ) : item.slice(0, 5) == "https" ? (
-            <img alt="" src={item} style={{ height: "auto", width: 100 }} />
-          ) : (
-            <img
-              alt=""
-              src={storeFirebase.api + "/files/" + item}
-              style={{ height: "auto", width: 100 }}
-            />
-          )}
-        </>
-      ),
+      width: "50%",
     },
     {
       title: "Action",
@@ -151,7 +127,7 @@ export default function CategoryManagement() {
 
   return (
     <WrapperStyled>
-      <div className="title-courses">Category List</div>
+      <div className="title-courses">Notification List</div>
       <div className="add-new-button">
         <InputSearch onChange={onSearch}></InputSearch>
         <Button
@@ -160,7 +136,7 @@ export default function CategoryManagement() {
           }}
           type="primary"
         >
-          New Category +
+          New Notification +
         </Button>
       </div>
       <CommonTable
@@ -177,17 +153,17 @@ export default function CategoryManagement() {
           pageSizeOptions: [3, 5, 10, 15, 20],
         }}
         columns={columns}
-        dataSource={state.dataCategory}
+        dataSource={state.dataNotification}
       />
       <NewCourseModal
         state={state}
         setState={setState}
         handleOpenSuccessModal={handleOpenSuccessModal}
-        tab="category"
+        tab="notification"
       />
-      <SuccessModal state={state} setState={setState} tab="category" />
-      <DeleteModal state={state} setState={setState} tab="category" />
-      <EditModal state={state} setState={setState} tab="category" />
+      <SuccessModal state={state} setState={setState} tab="notification" />
+      <DeleteModal state={state} setState={setState} tab="notification" />
+      <EditModal state={state} setState={setState} tab="notification" />
     </WrapperStyled>
   );
 }

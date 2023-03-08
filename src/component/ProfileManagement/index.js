@@ -1,5 +1,5 @@
 import { WrapperStyled } from "./styled";
-import { Button, Space, Modal, Input, Col, Row } from "antd";
+import { Button, Space, Modal, Input, Col, Row, Tooltip } from "antd";
 import React, { useEffect } from "react";
 import { CommonTable } from "../Common";
 import useCustomState from "../Common/useCustomState";
@@ -16,6 +16,7 @@ import TextArea from "antd/lib/input/TextArea";
 export default function ProfileManagement() {
   const [state, setState] = useCustomState({
     record: {},
+    openEditCourseModal: false,
   });
   const getData = () => {
     axios
@@ -125,9 +126,25 @@ export default function ProfileManagement() {
           ))}
         </Row>
       </EditModalWrapper>
+      <div className="upload-picture-container">
+        <div className="picture">
+          <div>Avatar :</div>
+
+          <div className="picture-container">
+            <Tooltip placement="right" title={"click to upload avatar"}>
+              <img
+                onClick={() => setState({ openEditCourseModal: true })}
+                alt=""
+                src={storeFirebase.api + "/files/" + state?.record?.avatar}
+              />
+            </Tooltip>
+          </div>
+        </div>
+      </div>
       <Button type="primary" onClick={onSave}>
         Save
       </Button>
+      <EditModal state={state} setState={setState} tab="avatar" />
     </WrapperStyled>
   );
 }

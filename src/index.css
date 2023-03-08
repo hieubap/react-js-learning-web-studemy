@@ -21,6 +21,10 @@ span.ant-modal-close-x {
   display: flex;
 }
 
+.justify-content-space-around {
+  justify-content: space-around;
+}
+
 .ant-modal-confirm-body .ant-modal-confirm-content {
   font-weight: 400;
 }

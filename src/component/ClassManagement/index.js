@@ -97,6 +97,29 @@ export default function ClassManagement() {
       width: "10%",
     },
     {
+      title: "Video",
+      dataIndex: "fileUrl",
+      key: "fileUrl",
+      align: "center",
+      width: "10px",
+      render: (item, record) => (
+        <>
+          {item == null ? (
+            <div>Chưa upload file</div>
+          ) : (
+            <div
+              className="link-file"
+              onClick={() => {
+                window.open(storeFirebase.api + "/files/" + item);
+              }}
+            >
+              {storeFirebase.api + "/files/" + item}
+            </div>
+          )}
+        </>
+      ),
+    },
+    {
       title: "Action",
       key: "action",
       align: "center",

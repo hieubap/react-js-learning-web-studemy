@@ -26,4 +26,8 @@ export const WrapperStyled = styled.div`
       }
     }
   }
+  .link-file {
+    cursor: pointer;
+    word-break: break-all;
+  }
 `;

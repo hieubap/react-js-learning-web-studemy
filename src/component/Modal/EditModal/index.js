@@ -59,92 +59,111 @@ export default function EditModal({ state, setState, tab }) {
       setState={setState}
       width={500}
       openModal={state.openEditCourseModal}
-      titleModal={
-        tab === "course"
-          ? "Edit course"
-          : tab === "chapter"
-          ? "Edit chapter"
-          : "Edit category"
-      }
+      titleModal={"Edit " + tab}
       arrowBack={false}
       footerCustom={
         <FooterCustomEditWrapper>
-          <Button
-            onClick={() => {
-              setState({ openEditCourseModal: false, record: {} });
-            }}
-            className={"button-footer cancel"}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              tab === "course"
-                ? axios
-                    .patch(
-                      `http://14.225.205.222:8800/course/${state?.record?.id}`,
-                      {
-                        name: state?.newName,
-                        duration: state?.newDuration,
-                        author: state?.newAuthor,
-                        price: state?.newPrice,
-                        categoryId: state?.newCategory,
-                        level: state?.newLevel,
-                      },
-                      {
-                        headers: headers,
-                      }
-                    )
-                    .then(function (response) {
-                      setState({ openEditCourseModal: false, record: {} });
-                      console.log(response);
-                    })
-                    .catch(function (error) {
-                      console.log(error);
-                    })
-                : tab === "chapter"
-                ? axios
-                    .put(
-                      `http://14.225.205.222:8800/chapter/${state?.record?.id}`,
-                      {
-                        name: state?.newName,
-                        duration: state?.newDuration,
-                        fileUrl: filePath.current,
-                        courseId: state.courseId,
-                      },
-                      {
-                        headers: headers,
-                      }
-                    )
-                    .then(function (response) {
-                      setState({ openEditCourseModal: false, record: {} });
-                      console.log(response);
-                    })
-                    .catch(function (error) {
-                      console.log(error);
-                    })
-                : axios
-                    .put(
-                      `http://14.225.205.222:8800/category/${state?.record?.id}`,
-                      {
-                        name: state?.newName,
-                      },
-                      {
-                        headers: headers,
-                      }
-                    )
-                    .then(function (response) {
-                      setState({ openEditCourseModal: false, record: {} });
-                      console.log(response);
-                    })
-                    .catch(function (error) {
-                      console.log(error);
-                    });
-            }}
-            className={"button-footer edit"}
-          >
-            Update
-          </Button>
+          {tab != "avatar" && (
+            <>
+              <Button
+                onClick={() => {
+                  setState({ openEditCourseModal: false, record: {} });
+                }}
+                className={"button-footer cancel"}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  tab === "course"
+                    ? axios
+                        .patch(
+                          `http://14.225.205.222:8800/course/${state?.record?.id}`,
+                          {
+                            name: state?.newName,
+                            duration: state?.newDuration,
+                            author: state?.newAuthor,
+                            price: state?.newPrice,
+                            categoryId: state?.newCategory,
+                            level: state?.newLevel,
+                            imageUrl: state?.imageUrl,
+                          },
+                          {
+                            headers: headers,
+                          }
+                        )
+                        .then(function (response) {
+                          setState({ openEditCourseModal: false, record: {} });
+                          console.log(response);
+                        })
+                        .catch(function (error) {
+                          console.log(error);
+                        })
+                    : tab === "chapter"
+                    ? axios
+                        .put(
+                          `http://14.225.205.222:8800/chapter/${state?.record?.id}`,
+                          {
+                            name: state?.newName,
+                            duration: state?.newDuration,
+                            fileUrl: filePath.current,
+                            courseId: state.courseId,
+                          },
+                          {
+                            headers: headers,
+                          }
+                        )
+                        .then(function (response) {
+                          setState({ openEditCourseModal: false, record: {} });
+                          console.log(response);
+                        })
+                        .catch(function (error) {
+                          console.log(error);
+                        })
+                    : tab === "category"
+                    ? axios
+                        .put(
+                          `http://14.225.205.222:8800/category/${state?.record?.id}`,
+                          {
+                            name: state?.newName,
+                            imageUrl: state?.imageUrl,
+                          },
+                          {
+                            headers: headers,
+                          }
+                        )
+                        .then(function (response) {
+                          setState({ openEditCourseModal: false, record: {} });
+                          console.log(response);
+                        })
+                        .catch(function (error) {
+                          console.log(error);
+                        })
+                    : axios
+                        .put(
+                          `http://14.225.205.222:8800/notification/${state?.record?.id}`,
+                          {
+                            title: state?.newTitleNotification,
+                            body: state?.newBodyNotification,
+                          },
+                          {
+                            headers: headers,
+                          }
+                        )
+                        .then(function (response) {
+                          setState({ openEditCourseModal: false, record: {} });
+                          console.log(response);
+                        })
+                        .catch(function (error) {
+                          console.log(error);
+                        });
+                }}
+                className={"button-footer edit"}
+              >
+                Update
+              </Button>
+            </>
+          )}
         </FooterCustomEditWrapper>
       }
       content={
@@ -217,6 +236,29 @@ export default function EditModal({ state, setState, tab }) {
                   }}
                 />
               </div>
+              <div className="d-flex input-container">
+                <div className="custom-title">Picture :</div>
+                <Input
+                  type="file"
+                  placeholder="choose file"
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    var d = new FormData();
+                    d.append("fileName", e.target.files[0].name);
+                    d.append("file", e.target.files[0]);
+
+                    axios
+                      .post(storeFirebase.api + "/file/upload", d)
+                      .then((res) => {
+                        filePath.current = res.data.data.filePath;
+                        setState({ imageUrl: res.data.data.filePath });
+                      })
+                      .catch((error) => console.log(error));
+                    console.log(e);
+                    // setState({ newName: e.target.value });
+                  }}
+                />
+              </div>
             </>
           ) : tab === "chapter" ? (
             <>
@@ -277,7 +319,7 @@ export default function EditModal({ state, setState, tab }) {
                 />
               </div>
             </>
-          ) : (
+          ) : tab === "category" ? (
             <>
               <div className="d-flex input-container">
                 <div className="custom-title">Name category :</div>
@@ -286,6 +328,83 @@ export default function EditModal({ state, setState, tab }) {
                   style={{ width: "300px" }}
                   onChange={(e) => {
                     setState({ newName: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="d-flex input-container">
+                <div className="custom-title">Picture :</div>
+                <Input
+                  type="file"
+                  placeholder="choose file"
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    var d = new FormData();
+                    d.append("fileName", e.target.files[0].name);
+                    d.append("file", e.target.files[0]);
+
+                    axios
+                      .post(storeFirebase.api + "/file/upload", d)
+                      .then((res) => {
+                        filePath.current = res.data.data.filePath;
+                        setState({ imageUrl: res.data.data.filePath });
+                      })
+                      .catch((error) => console.log(error));
+                    console.log(e);
+                    // setState({ newName: e.target.value });
+                  }}
+                />
+              </div>
+            </>
+          ) : tab === "notification" ? (
+            <>
+              <div className="d-flex input-container">
+                <div className="custom-title">Title notification :</div>
+                <Input
+                  placeholder={state?.record?.title}
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    setState({ newTitleNotification: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="d-flex input-container">
+                <div className="custom-title">Body notification :</div>
+                <Input
+                  placeholder={state?.record?.body}
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    setState({ newBodyNotification: e.target.value });
+                  }}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="d-flex input-container">
+                <div className="custom-title">Upload avatar :</div>
+                <Input
+                  type="file"
+                  placeholder="choose file"
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    var d = new FormData();
+                    d.append("fileName", e.target.files[0].name);
+                    d.append("file", e.target.files[0]);
+
+                    axios
+                      .post(storeFirebase.api + "/file/upload", d)
+                      .then((res) => {
+                        filePath.current = res.data.data.filePath;
+                        setState({
+                          record: {
+                            ...state.record,
+                            avatar: res.data.data.filePath,
+                          },
+                          openEditCourseModal: false,
+                        });
+                      })
+                      .catch((error) => console.log(error));
+                    console.log(e);
                   }}
                 />
               </div>

@@ -26,24 +26,4 @@ export const WrapperStyled = styled.div`
       }
     }
   }
-  .upload-picture-container {
-    height: 200px;
-    display: flex;
-    justify-content: space-around;
-    /* .upload {
-      width: 50%;
-    } */
-    .picture {
-      width: 50%;
-      .picture-container {
-        img {
-          margin-top: 10px;
-          border-radius: 20px;
-          cursor: pointer;
-          height: auto;
-          width: 300px;
-        }
-      }
-    }
-  }
 `;

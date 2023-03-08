@@ -11,13 +11,7 @@ export default function DeleteModal({ state, setState, tab }) {
       setState={setState}
       width={450}
       openModal={state.openDeleteCourseModal}
-      titleModal={
-        tab === "course"
-          ? "Delete course"
-          : tab === "chapter"
-          ? "Delete chapter"
-          : "Delete category"
-      }
+      titleModal={"Delete " + tab}
       arrowBack={false}
       footerCustom={
         <FooterCustomDeleteWrapper>
@@ -62,9 +56,24 @@ export default function DeleteModal({ state, setState, tab }) {
                     .catch(function (error) {
                       console.log(error);
                     })
-                : axios
+                : tab === "category"
+                ? axios
                     .delete(
                       `http://14.225.205.222:8800/category/${state?.record?.id}`,
+                      {
+                        headers: headers,
+                      }
+                    )
+                    .then(function (response) {
+                      console.log(response);
+                      setState({ openDeleteCourseModal: false });
+                    })
+                    .catch(function (error) {
+                      console.log(error);
+                    })
+                : axios
+                    .delete(
+                      `http://14.225.205.222:8800/notification/${state?.record?.id}`,
                       {
                         headers: headers,
                       }
@@ -103,11 +112,16 @@ export default function DeleteModal({ state, setState, tab }) {
               <div>Create time : {state?.record?.createdAt}</div>
               <div>Update time : {state?.record?.updatedAt}</div>
             </>
-          ) : (
+          ) : tab === "category" ? (
             <>
               <div>Name : {state?.record?.name}</div>
               <div>Create time : {state?.record?.createdAt}</div>
               <div>Update time : {state?.record?.updatedAt}</div>
+            </>
+          ) : (
+            <>
+              <div>Title : {state?.record?.title}</div>
+              <div>Body : {state?.record?.body}</div>
             </>
           )}
 

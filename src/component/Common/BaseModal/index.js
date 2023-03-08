@@ -18,7 +18,8 @@ export default function BaseModal({
     if (
       titleModal === "New course" ||
       titleModal === "New chapter" ||
-      titleModal === "New category"
+      titleModal === "New category" ||
+      titleModal === "New notification"
     ) {
       setState({ openNewCourseModal: false });
     } else if (titleModal === "Success") {
@@ -26,12 +27,15 @@ export default function BaseModal({
     } else if (
       titleModal === "Delete course" ||
       titleModal === "Delete chapter" ||
+      titleModal === "Delete notification" ||
       titleModal === "Delete category"
     ) {
       setState({ openDeleteCourseModal: false });
     } else if (
       titleModal === "Edit course" ||
       titleModal === "Edit chapter" ||
+      titleModal === "Edit notification" ||
+      titleModal === "Edit avatar" ||
       titleModal === "Edit category"
     ) {
       setState({ openEditCourseModal: false });

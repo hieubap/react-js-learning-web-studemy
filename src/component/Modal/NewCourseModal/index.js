@@ -58,13 +58,7 @@ export default function NewCourseModal({
       setState={setState}
       width={500}
       openModal={state.openNewCourseModal}
-      titleModal={
-        tab === "course"
-          ? "New course"
-          : tab === "chapter"
-          ? "New chapter"
-          : "New category"
-      }
+      titleModal={"New " + tab}
       // buttonFooter={"Add new course"}
       footerCustom={
         <FooterCustomWrapper>
@@ -82,6 +76,7 @@ export default function NewCourseModal({
                         price: state?.newPrice,
                         categoryId: state?.newCategory,
                         level: state?.newLevel,
+                        imageUrl: state?.imageUrl,
                       },
                       { headers: headers }
                     )
@@ -113,11 +108,28 @@ export default function NewCourseModal({
                   : (() => {
                       ModalError("Vui lòng upload file");
                     })()
-                : await axios
+                : tab === "category"
+                ? await axios
                     .post(
                       `http://14.225.205.222:8800/category`,
                       {
                         name: state?.newName,
+                        imageUrl: state?.imageUrl,
+                      },
+                      { headers: headers }
+                    )
+                    .then(function (response) {
+                      console.log(response);
+                    })
+                    .catch(function (error) {
+                      console.log(error);
+                    })
+                : await axios
+                    .post(
+                      `http://14.225.205.222:8800/notification`,
+                      {
+                        title: state?.newTitleNotification,
+                        body: state?.newBodyNotification,
                       },
                       { headers: headers }
                     )
@@ -213,6 +225,29 @@ export default function NewCourseModal({
                   }}
                 />
               </div>
+              <div className="d-flex input-container">
+                <div className="custom-title">Picture :</div>
+                <Input
+                  type="file"
+                  placeholder="choose file"
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    var d = new FormData();
+                    d.append("fileName", e.target.files[0].name);
+                    d.append("file", e.target.files[0]);
+
+                    axios
+                      .post(storeFirebase.api + "/file/upload", d)
+                      .then((res) => {
+                        filePath.current = res.data.data.filePath;
+                        setState({ imageUrl: res.data.data.filePath });
+                      })
+                      .catch((error) => console.log(error));
+                    console.log(e);
+                    // setState({ newName: e.target.value });
+                  }}
+                />
+              </div>
             </>
           ) : tab === "chapter" ? (
             <>
@@ -273,7 +308,7 @@ export default function NewCourseModal({
                 />
               </div>
             </>
-          ) : (
+          ) : tab === "category" ? (
             <>
               <div className="d-flex input-container">
                 <div className="custom-title">Name category :</div>
@@ -282,6 +317,52 @@ export default function NewCourseModal({
                   style={{ width: "300px" }}
                   onChange={(e) => {
                     setState({ newName: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="d-flex input-container">
+                <div className="custom-title">Picture :</div>
+                <Input
+                  type="file"
+                  placeholder="choose file"
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    var d = new FormData();
+                    d.append("fileName", e.target.files[0].name);
+                    d.append("file", e.target.files[0]);
+
+                    axios
+                      .post(storeFirebase.api + "/file/upload", d)
+                      .then((res) => {
+                        filePath.current = res.data.data.filePath;
+                        setState({ imageUrl: res.data.data.filePath });
+                      })
+                      .catch((error) => console.log(error));
+                    console.log(e);
+                    // setState({ newName: e.target.value });
+                  }}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="d-flex input-container">
+                <div className="custom-title">Title notification :</div>
+                <Input
+                  placeholder="Enter title notification ..."
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    setState({ newTitleNotification: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="d-flex input-container">
+                <div className="custom-title">Body notification :</div>
+                <Input
+                  placeholder="Enter body notification ..."
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    setState({ newBodyNotification: e.target.value });
                   }}
                 />
               </div>

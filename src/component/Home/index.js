@@ -8,6 +8,7 @@ import useToken from "../Common/useToken";
 import CategoryManagement from "../CagetoryManagement";
 import RegisterManagement from "../RegisterManagement";
 import ProfileManagement from "../ProfileManagement";
+import NotificationManagement from "../NotificationManagement";
 export default function Home() {
   const history = useHistory();
   const { token } = useToken();
@@ -40,6 +41,7 @@ export default function Home() {
     getItem("Category Management", "sub3", null),
     getItem("Register Management", "sub4", null),
     getItem("Profile Management", "sub5", null),
+    getItem("Notification Management", "sub6", null),
   ];
   const onClick = (e) => {
     setOpenDetail(e.keyPath[e.keyPath.length - 1]);
@@ -83,6 +85,8 @@ export default function Home() {
             <RegisterManagement />
           ) : openDetail === "sub5" ? (
             <ProfileManagement />
+          ) : openDetail === "sub6" ? (
+            <NotificationManagement />
           ) : (
             <>fail</>
           )}
