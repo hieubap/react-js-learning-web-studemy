@@ -98,6 +98,38 @@ export default function NotificationManagement() {
           <div
             className="action"
             onClick={() => {
+              axios
+                .post(
+                  "https://fcm.googleapis.com/fcm/send",
+                  {
+                    to: "/topics/channel_learning_app",
+                    notification: {
+                      title: record.title,
+                      body: record.body,
+                    },
+                  },
+                  {
+                    headers: {
+                      Authorization:
+                        "key=AAAAfv6RZso:APA91bFd6oosLMnNCO-ymXN7z2cT3vJJ7tim56RkEGbEyefORsDHJCS7eGa9dsKhXUCfRzc_MMRZWHrAWbrEewMrDI56rPP0eYsMjOpKGL9DDQg1r9jPZQJT_ZwEr7q7BxVj-DQgqI1Y",
+                    },
+                  }
+                )
+                .then((res) => {
+                  setState({ openSuccessModal: true });
+                })
+                .catch((error) => console.log(error));
+            }}
+          >
+            <img
+              alt=""
+              className="action-table"
+              src={require("../../assets/send-icon.png")}
+            />
+          </div>
+          <div
+            className="action"
+            onClick={() => {
               setState({ openEditCourseModal: true, record: record });
             }}
           >
