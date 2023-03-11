@@ -139,12 +139,32 @@ export default function EditModal({ state, setState, tab }) {
                         .catch(function (error) {
                           console.log(error);
                         })
-                    : axios
+                    : tab === "notification"
+                    ? axios
                         .put(
                           `http://14.225.205.222:8800/notification/${state?.record?.id}`,
                           {
                             title: state?.newTitleNotification,
                             body: state?.newBodyNotification,
+                          },
+                          {
+                            headers: headers,
+                          }
+                        )
+                        .then(function (response) {
+                          setState({ openEditCourseModal: false, record: {} });
+                          console.log(response);
+                        })
+                        .catch(function (error) {
+                          console.log(error);
+                        })
+                    : axios
+                        .put(
+                          `http://14.225.205.222:8800/banner/${state?.record?.id}`,
+                          {
+                            title: state?.newTitleBanner,
+                            content: state?.newContentBanner,
+                            imageUrl: state?.imageUrl,
                           },
                           {
                             headers: headers,
@@ -378,7 +398,7 @@ export default function EditModal({ state, setState, tab }) {
                 />
               </div>
             </>
-          ) : (
+          ) : tab === "avatar" ? (
             <>
               <div className="d-flex input-container">
                 <div className="custom-title">Upload avatar :</div>
@@ -405,6 +425,52 @@ export default function EditModal({ state, setState, tab }) {
                       })
                       .catch((error) => console.log(error));
                     console.log(e);
+                  }}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="d-flex input-container">
+                <div className="custom-title">Title banner :</div>
+                <Input
+                  placeholder={state?.record?.title}
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    setState({ newTitleBanner: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="d-flex input-container">
+                <div className="custom-title">Content banner :</div>
+                <Input
+                  placeholder={state?.record?.content}
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    setState({ newContentBanner: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="d-flex input-container">
+                <div className="custom-title">Picture :</div>
+                <Input
+                  type="file"
+                  placeholder="choose file"
+                  style={{ width: "300px" }}
+                  onChange={(e) => {
+                    var d = new FormData();
+                    d.append("fileName", e.target.files[0].name);
+                    d.append("file", e.target.files[0]);
+
+                    axios
+                      .post(storeFirebase.api + "/file/upload", d)
+                      .then((res) => {
+                        filePath.current = res.data.data.filePath;
+                        setState({ imageUrl: res.data.data.filePath });
+                      })
+                      .catch((error) => console.log(error));
+                    console.log(e);
+                    // setState({ newName: e.target.value });
                   }}
                 />
               </div>

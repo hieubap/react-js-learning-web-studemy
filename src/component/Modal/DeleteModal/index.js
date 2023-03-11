@@ -71,9 +71,24 @@ export default function DeleteModal({ state, setState, tab }) {
                     .catch(function (error) {
                       console.log(error);
                     })
-                : axios
+                : tab === "notification"
+                ? axios
                     .delete(
                       `http://14.225.205.222:8800/notification/${state?.record?.id}`,
+                      {
+                        headers: headers,
+                      }
+                    )
+                    .then(function (response) {
+                      console.log(response);
+                      setState({ openDeleteCourseModal: false });
+                    })
+                    .catch(function (error) {
+                      console.log(error);
+                    })
+                : axios
+                    .delete(
+                      `http://14.225.205.222:8800/banner/${state?.record?.id}`,
                       {
                         headers: headers,
                       }
@@ -118,10 +133,15 @@ export default function DeleteModal({ state, setState, tab }) {
               <div>Create time : {state?.record?.createdAt}</div>
               <div>Update time : {state?.record?.updatedAt}</div>
             </>
-          ) : (
+          ) : tab === "notification" ? (
             <>
               <div>Title : {state?.record?.title}</div>
               <div>Body : {state?.record?.body}</div>
+            </>
+          ) : (
+            <>
+              <div>Title : {state?.record?.title}</div>
+              <div>Content : {state?.record?.content}</div>
             </>
           )}
 

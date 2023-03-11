@@ -19,6 +19,7 @@ export default function BaseModal({
       titleModal === "New course" ||
       titleModal === "New chapter" ||
       titleModal === "New category" ||
+      titleModal === "New banner" ||
       titleModal === "New notification"
     ) {
       setState({ openNewCourseModal: false });
@@ -28,6 +29,7 @@ export default function BaseModal({
       titleModal === "Delete course" ||
       titleModal === "Delete chapter" ||
       titleModal === "Delete notification" ||
+      titleModal === "Delete banner" ||
       titleModal === "Delete category"
     ) {
       setState({ openDeleteCourseModal: false });
@@ -35,6 +37,7 @@ export default function BaseModal({
       titleModal === "Edit course" ||
       titleModal === "Edit chapter" ||
       titleModal === "Edit notification" ||
+      titleModal === "Edit banner" ||
       titleModal === "Edit avatar" ||
       titleModal === "Edit category"
     ) {

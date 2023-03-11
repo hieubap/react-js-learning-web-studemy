@@ -9,6 +9,7 @@ import CategoryManagement from "../CagetoryManagement";
 import RegisterManagement from "../RegisterManagement";
 import ProfileManagement from "../ProfileManagement";
 import NotificationManagement from "../NotificationManagement";
+import BannerManagement from "../BannerManagement";
 export default function Home() {
   const history = useHistory();
   const { token } = useToken();
@@ -42,6 +43,7 @@ export default function Home() {
     getItem("Register Management", "sub4", null),
     getItem("Profile Management", "sub5", null),
     getItem("Notification Management", "sub6", null),
+    getItem("Banner Management", "sub7", null),
   ];
   const onClick = (e) => {
     setOpenDetail(e.keyPath[e.keyPath.length - 1]);
@@ -87,6 +89,8 @@ export default function Home() {
             <ProfileManagement />
           ) : openDetail === "sub6" ? (
             <NotificationManagement />
+          ) : openDetail === "sub7" ? (
+            <BannerManagement />
           ) : (
             <>fail</>
           )}
