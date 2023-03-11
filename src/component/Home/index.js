@@ -37,7 +37,7 @@ export default function Home() {
   }, [openDetail]);
   const items = [
     getItem("Course Management", "sub1", null),
-    getItem("Class Management", "sub2", null),
+    getItem("Chapter Management", "sub2", null),
     getItem("Category Management", "sub3", null),
     getItem("Register Management", "sub4", null),
     getItem("Profile Management", "sub5", null),

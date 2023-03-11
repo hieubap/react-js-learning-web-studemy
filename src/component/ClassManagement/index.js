@@ -1,5 +1,5 @@
 import { WrapperStyled } from "./styled";
-import { Button, Space, Modal } from "antd";
+import { Button, Space, Modal, Select } from "antd";
 import React, { useEffect } from "react";
 import { CommonTable } from "../Common";
 import useCustomState from "../Common/useCustomState";
@@ -21,8 +21,11 @@ export default function ClassManagement() {
     openEditCourseModal: false,
     page: 0,
     size: 10,
+    courses: [],
   });
-  const onSearch = (name) => {
+  const onSearch = (name, courseId) => {
+    console.log("search", courseId);
+    setState({ name, courseId });
     axios
       .get(storeFirebase.api + "/chapter", {
         params: {
@@ -30,6 +33,7 @@ export default function ClassManagement() {
           size: 500,
           createdBy: localStorage.getItem("userId"),
           name: name?.toLowerCase(),
+          courseId: courseId,
         },
         headers: headers,
       })
@@ -53,6 +57,26 @@ export default function ClassManagement() {
     state.openDeleteCourseModal,
     state.openEditCourseModal,
   ]);
+  useEffect(() => {
+    axios
+      .get(storeFirebase.api + "/course", {
+        params: { page: 0, size: 500 },
+        headers: headers,
+      })
+      .then((res) => {
+        let courses = [];
+        res.data?.data?.map((item, index) => {
+          let newData = {
+            ...item,
+            value: item.id,
+            label: item.name,
+          };
+          courses.push(newData);
+        });
+        setState({ courses });
+      })
+      .catch((error) => console.log(error));
+  }, []);
   const handleOpenSuccessModal = () => {
     setState({ openSuccessModal: true });
     setState({ openNewCourseModal: false });
@@ -166,7 +190,18 @@ export default function ClassManagement() {
     <WrapperStyled>
       <div className="title-courses">Chapter List</div>
       <div className="add-new-button">
-        <InputSearch onChange={onSearch}></InputSearch>
+        <InputSearch
+          style={{ flex: 1 }}
+          onChange={(name) => onSearch(name, state.courseId)}
+        ></InputSearch>
+        <Select
+          style={{ flex: 3 }}
+          placeholder="Select course"
+          options={state.courses}
+          onChange={(e) => {
+            onSearch(state.name, e);
+          }}
+        ></Select>
         <Button
           onClick={() => {
             setState({ openNewCourseModal: true });

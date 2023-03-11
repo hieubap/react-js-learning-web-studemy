@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Input } from "antd";
 
-function InputSearch({ onChange } = {}) {
+function InputSearch({ onChange, style } = {}) {
   const [value, setValue] = useState("");
   const refTimeout = useRef();
 
@@ -21,6 +21,7 @@ function InputSearch({ onChange } = {}) {
       placeholder="search something"
       value={value}
       onChange={handleChange}
+      style={style}
     ></Input>
   );
 }
